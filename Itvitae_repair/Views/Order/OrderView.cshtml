@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "OrderView";
+}
+
+<h2>OrderView</h2>
+
+
+<li>@Html.ActionLink("Create Order", "CreateOrder", "Order")</li>
+<li>@Html.ActionLink("Edit Order (User)", "EditUserOrder", "Order")</li>
+<li>@Html.ActionLink("Edit Order (Worker)", "EditWorkerOrder", "Order")</li>
+<li>@Html.ActionLink("Edit Order (Admin)", "EditAdminOrder", "Order")</li>
+<li>@Html.ActionLink("Add Parts", "AddParts", "Order")</li>
+<li>@Html.ActionLink("Add Parts To Order", "AddPartsToOrder", "Order")</li>
+
+<li>@Html.ActionLink("View Orders (User)", "ViewUserList", "Order")</li>
+<li>@Html.ActionLink("View Orders (Worker)", "ViewWorkerList", "Order")</li>
+<li>@Html.ActionLink("View Orders (Admin)", "ViewAdminList", "Order")</li>

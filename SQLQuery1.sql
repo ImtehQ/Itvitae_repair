@@ -1,0 +1,146 @@
+﻿USE [RepairDB]
+GO
+/** Object:  Table [dbo].[Customer]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Customer](
+	[CustomerId] [int] IDENTITY(1,1) NOT NULL,
+	[Auth] [int] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED 
+(
+	[CustomerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[Employee]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employee](
+	[EmployeeId] [int] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[PayPerHour] [decimal](18, 0) NOT NULL,
+ CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[ImageList]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ImageList](
+	[ImageId] [int] NOT NULL,
+	[Image] [varbinary](max) NOT NULL,
+	[OrderId] [int] NOT NULL,
+ CONSTRAINT [PK_ImageList] PRIMARY KEY CLUSTERED 
+(
+	[ImageId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[Order]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Order](
+	[OrderId] [int] IDENTITY(1,1) NOT NULL,
+	[EmployeeId] [int] NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[PartlistId] [int] NOT NULL,
+	[StatusId] [int] NOT NULL,
+	[Description] [varchar](1000) NULL,
+	[StartDate] [datetime2](7) NOT NULL,
+	[EndDate] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED 
+(
+	[OrderId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[Part]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Part](
+	[PartId] [int] NOT NULL,
+	[Price] [decimal](18, 0) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Part] PRIMARY KEY CLUSTERED 
+(
+	[PartId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[PartsList]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PartsList](
+	[PartsListId] [int] IDENTITY(1,1) NOT NULL,
+	[OrderId] [int] NOT NULL,
+	[PartId] [int] NOT NULL,
+ CONSTRAINT [PK_Table_5212766990031B67] PRIMARY KEY CLUSTERED 
+(
+	[PartsListId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[Status]    Script Date: 1/29/2021 3:01:54 PM **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Status](
+	[StatusId] [int] NOT NULL,
+	[Status] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
+(
+	[StatusId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ImageList]  WITH CHECK ADD  CONSTRAINT [FK_ImageList_ImageList] FOREIGN KEY([ImageId])
+REFERENCES [dbo].[ImageList] ([ImageId])
+GO
+ALTER TABLE [dbo].[ImageList] CHECK CONSTRAINT [FK_ImageList_ImageList]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_Customer] FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([CustomerId])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_Customer]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_Employee] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employee] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_Employee]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_PartsList] FOREIGN KEY([PartlistId])
+REFERENCES [dbo].[PartsList] ([PartsListId])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_PartsList]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_Status] FOREIGN KEY([StatusId])
+REFERENCES [dbo].[Status] ([StatusId])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_Status]
+GO
+ALTER TABLE [dbo].[PartsList]  WITH CHECK ADD  CONSTRAINT [FK_PartsList_Order] FOREIGN KEY([OrderId])
+REFERENCES [dbo].[Order] ([OrderId])
+GO
+ALTER TABLE [dbo].[PartsList] CHECK CONSTRAINT [FK_PartsList_Order]
+GO
+ALTER TABLE [dbo].[PartsList]  WITH CHECK ADD  CONSTRAINT [FK_PartsList_Part] FOREIGN KEY([PartId])
+REFERENCES [dbo].[Part] ([PartId])
+GO
+ALTER TABLE [dbo].[PartsList] CHECK CONSTRAINT [FK_PartsList_Part]
+GO
